@@ -1,0 +1,13 @@
+__pycache__/
+venv/
+.env
+models/
+.dvc/cache/
+"dvcstore/" 
+"dvcstore/" 
+/model.pkl
+"__pycache__/" 
+"models/" 
+".dvc/" 
+"dvcstore/" 
+/metrics.json
