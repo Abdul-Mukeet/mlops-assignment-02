@@ -21,5 +21,5 @@ def train_model(csv_path: str):
 
 
 if __name__ == "__main__":
-    train_model("data/dataset.csv")
+    train_model("data/sample_dataset.csv")
     print(f"Training completed, model saved as {MODEL_PATH}")
