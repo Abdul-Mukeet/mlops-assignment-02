@@ -1,32 +1,52 @@
+# train.py
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression  # example model
-from sklearn.metrics import accuracy_score  # metric
-import joblib
-import json
+from sklearn.linear_model import LogisticRegression
+import pickle
+import os
 
-# Load dataset
-data = pd.read_csv('data/dataset.csv')
-X = data.drop('target', axis=1)  # replace 'target' with your actual target column
-y = data['target']
+# ---------------------------
+# 1. Load dataset
+# ---------------------------
+data_path = "data/dataset.csv"  # path to your CSV
+if not os.path.exists(data_path):
+    raise FileNotFoundError(f"Dataset not found at {data_path}")
 
-# Split dataset
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+data = pd.read_csv(data_path)
 
-# Train model
+# ---------------------------
+# 2. Define features and target
+# ---------------------------
+# Use the correct target column from your dataset
+target_column = "label"
+
+if target_column not in data.columns:
+    raise ValueError(
+        f"Target column '{target_column}' not found in dataset. "
+        f"Columns available: {data.columns.tolist()}"
+    )
+
+X = data.drop(target_column, axis=1)
+y = data[target_column]
+
+# ---------------------------
+# 3. Split into train and test sets
+# ---------------------------
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# ---------------------------
+# 4. Train model
+# ---------------------------
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
-# Save model
-joblib.dump(model, 'model.pkl')
+# ---------------------------
+# 5. Save trained model
+# ---------------------------
+output_path = "model.pkl"
+with open(output_path, "wb") as f:
+    pickle.dump(model, f)
 
-# Evaluate
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-
-# Save metrics
-metrics = {'accuracy': accuracy}
-with open('metrics.json', 'w') as f:
-    json.dump(metrics, f)
-
-print("Training completed. Model saved as model.pkl and metrics saved as metrics.json")
+print(f"Training completed, model saved as {output_path}")
