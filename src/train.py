@@ -3,14 +3,19 @@ from sklearn.linear_model import LogisticRegression
 import joblib
 import os
 
+
 MODEL_PATH = "models/model.pkl"
 
 
-def train_model(csv_path: str):
-    """Train logistic regression model and save to MODEL_PATH."""
+def get_feature_count(csv_path):
     data = pd.read_csv(csv_path)
-    target_column = "label"
-    X = data.drop(columns=target_column)
+    return data.shape[1] - 1  # exclude target column
+
+
+def train_model(csv_path):
+    data = pd.read_csv(csv_path)
+    target_column = 'label'  # change if needed
+    X = data.drop(target_column, axis=1)
     y = data[target_column]
 
     model = LogisticRegression()
