@@ -4,3 +4,4 @@ venv/
 models/
 .dvc/cache/
 /model.pkl
+"dvcstore/" 
