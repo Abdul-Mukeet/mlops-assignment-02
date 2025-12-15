@@ -3,6 +3,6 @@ venv/
 .env
 models/
 .dvc/cache/
+"dvcstore/" 
+"dvcstore/" 
 /model.pkl
-"dvcstore/" 
-"dvcstore/" 
