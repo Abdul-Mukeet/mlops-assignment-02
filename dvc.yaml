@@ -6,3 +6,11 @@ stages:
     - train.py
     outs:
     - model.pkl
+  evaluate_model:
+    cmd: python eval.py
+    deps:
+    - data/dataset.csv
+    - eval.py
+    - models/model.pkl
+    outs:
+    - metrics.json
