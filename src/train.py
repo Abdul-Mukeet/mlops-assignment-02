@@ -14,7 +14,7 @@ def get_feature_count(csv_path):
 
 def train_model(csv_path):
     data = pd.read_csv(csv_path)
-    target_column = 'label'
+    target_column = 'label'  # change if needed
     X = data.drop(target_column, axis=1)
     y = data[target_column]
 
