@@ -1,32 +1,28 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-import pickle
+from sklearn.linear_model import LogisticRegression
+import joblib
 import os
 
-# Load dataset
-data = pd.read_csv("data/dataset.csv")
+MODEL_PATH = "models/model.pkl"
 
-# Replace 'label' with your actual target column name
-target_column = 'label'
-if target_column not in data.columns:
-    raise ValueError(f"Target column '{target_column}' not found. Columns: {data.columns.tolist()}")
+def get_feature_count(csv_path):
+    data = pd.read_csv(csv_path)
+    return data.shape[1] - 1  # exclude target column
 
-X = data.drop(target_column, axis=1)
-y = data[target_column]
+def train_model(csv_path):
+    data = pd.read_csv(csv_path)
+    target_column = 'label'  # change if needed
+    X = data.drop(target_column, axis=1)
+    y = data[target_column]
 
-# Split dataset
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = LogisticRegression()
+    model.fit(X, y)
 
-# Train a simple model
-model = LinearRegression()
-model.fit(X_train, y_train)
+    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+    joblib.dump(model, MODEL_PATH)
+    return model
 
-# Create models folder if it doesn't exist
-os.makedirs("models", exist_ok=True)
-
-# Save the model
-with open("models/model.pkl", "wb") as f:
-    pickle.dump(model, f)
-
-print("Training completed, model saved as models/model.pkl")
+if __name__ == "__main__":
+    train_model("data/dataset.csv")
+    print(f"Training completed, model saved as {MODEL_PATH}")
