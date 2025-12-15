@@ -6,3 +6,6 @@ models/
 "dvcstore/" 
 "dvcstore/" 
 /model.pkl
+"__pycache__/" 
+"models/" 
+".dvc/" 
